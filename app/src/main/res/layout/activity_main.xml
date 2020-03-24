@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+   <EditText
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:hint="AddSomething"
+       android:text="Document Id"
+       android:id="@+id/documentIDTV"
+       android:layout_marginStart="10dp"
+
+
+
+       ></EditText>
+   <EditText
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:hint="AddSomething"
+       android:text="Document Id"
+       android:id="@+id/documentIDET"
+       android:layout_marginStart="10dp"
+       android:layout_below="@id/documentIDTV"
+       android:layout_marginEnd="10dp"
+       android:inputType="text"
+       android:singleLine="true"
+       android:maxLength="20"
+
+
+
+
+       ></EditText>
+
+   <EditText
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:hint="Add city Name"
+       android:text="CityName Id"
+       android:id="@+id/cityNameTV"
+       android:layout_marginStart="10dp"
+       android:layout_below="@id/documentIDET"
+       android:layout_marginEnd="10dp"
+       android:inputType="text"
+       android:singleLine="true"
+       android:maxLength="20"
+
+
+
+
+       ></EditText>
+   <EditText
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:hint="AddSomething"
+       android:text="City Details"
+       android:id="@+id/citydetailsTV"
+       android:layout_marginStart="10dp"
+       android:layout_below="@id/cityNameTV"
+       android:layout_marginEnd="10dp"
+       android:inputType="text"
+       android:singleLine="true"
+       android:maxLength="20"
+
+
+
+
+       ></EditText>
+   <Button
+       android:layout_width="200dp"
+       android:layout_height="60dp"
+       android:layout_below="@id/citydetailsTV"
+       android:onClick="addValues"
+       android:id="@+id/save"
+       android:text="Add Values"></Button>
+   <Button
+       android:layout_width="200dp"
+       android:layout_height="60dp"
+       android:id="@+id/loadNote"
+       android:layout_below="@id/save"
+       android:onClick="loadNote"
+       android:text="Show Values"></Button>
+   <TextView
+       android:layout_width="200dp"
+       android:layout_height="200dp"
+       android:id="@+id/infoTV"
+      android:text="info"
+       android:layout_below="@id/loadNote"></TextView>
+</RelativeLayout>
