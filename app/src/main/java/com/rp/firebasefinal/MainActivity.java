@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 objectDialog.show();
                 Map<String, Object> objectMap = new HashMap<>();
                 objectMap.put("city_name", cityNameET.getText().toString());
-
                 objectMap.put("city_details", cityDetailsET.getText().toString());
                 objectFirebaseFirestore.collection("NewCities")
                         .document(documentET.getText().toString()).set(objectMap)
@@ -99,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 String cityId= documentSnapshot.getId();
+                                documentET.setText("");
+                                documentET.requestFocus();
                                 String cityDetails = documentSnapshot.getString("city_details");
                                 String cityName = documentSnapshot.getString("city_name");
 
@@ -133,6 +134,39 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void updateDocumentFieldValue(View view){
+        try {
+
+            objectDocumentReference = objectFirebaseFirestore.collection("NewCities").document(
+
+                    documentET.getText().toString()
+            );
+            Map<String,Object> objectMap=new HashMap<>();
+           objectMap.put("city_details",cityDetailsET.getText().toString());
+           objectDocumentReference.update(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+               @Override
+               public void onSuccess(Void aVoid) {
+                   Toast.makeText(MainActivity.this,"Updated",Toast.LENGTH_SHORT).show();
+
+               }
+           }).addOnFailureListener(new OnFailureListener() {
+               @Override
+               public void onFailure(@NonNull Exception e) {
+                   Toast.makeText(MainActivity.this,"Failed Update",Toast.LENGTH_SHORT).show();
+
+               }
+           });
+        }catch (Exception e)
+        {
+
+            objectDialog.dismiss();
+            Toast.makeText(this, "addValues:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+            }
 
     }
 }

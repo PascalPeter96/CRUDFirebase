@@ -4,94 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/backgraound_gradient"
 
+    >
 
-   <EditText
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:hint="AddSomething"
-       android:text="Document Id"
-       android:id="@+id/documentIDTV"
-       android:layout_marginStart="10dp"
-
-
-
-       ></EditText>
-   <EditText
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:hint="AddSomething"
-       android:text="Document Id"
-       android:id="@+id/documentIDET"
-       android:layout_marginStart="10dp"
-       android:layout_below="@id/documentIDTV"
-       android:layout_marginEnd="10dp"
-       android:inputType="text"
-       android:singleLine="true"
-       android:maxLength="20"
-
-
-
-
-       ></EditText>
-
-   <EditText
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:hint="Add city Name"
-       android:text="CityName Id"
-       android:id="@+id/cityNameTV"
-       android:layout_marginStart="10dp"
-       android:layout_below="@id/documentIDET"
-       android:layout_marginEnd="10dp"
-       android:inputType="text"
-       android:singleLine="true"
-       android:maxLength="20"
-
-
-
-
-       ></EditText>
-   <EditText
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:hint="AddSomething"
-       android:text="City Details"
-       android:id="@+id/citydetailsTV"
-       android:layout_marginStart="10dp"
-       android:layout_below="@id/cityNameTV"
-       android:layout_marginEnd="10dp"
-       android:inputType="text"
-       android:singleLine="true"
-       android:maxLength="20"
-
-
-
-
-       ></EditText>
-   <Button
-       android:layout_width="200dp"
-       android:layout_height="60dp"
-       android:layout_below="@id/citydetailsTV"
-       android:onClick="addValues"
-       android:id="@+id/save"
-       android:text="Add Values"></Button>
-   <Button
-       android:layout_width="200dp"
-       android:layout_height="60dp"
-       android:id="@+id/loadNote"
-       android:layout_below="@id/save"
-       android:onClick="getValuesFromFb"
-       android:text="Show Values"></Button>
    <TextView
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:textSize="20sp"
-       android:layout_below="@id/loadNote"
-       android:layout_marginLeft="20dp"
-       android:id="@+id/LTEXT"
+       android:text="FireBase Crud Operations"
+       android:textSize="25sp"
+       android:fontFamily="sans-serif-condensed-medium"
+       android:layout_marginStart="70dp"
+       ></TextView>
 
-       />
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentEnd="true"
+       android:layout_alignParentBottom="true"
+       android:layout_marginStart="103dp"
+       android:layout_marginTop="66dp"
+       android:layout_marginEnd="108dp"
+       android:layout_marginBottom="116dp"
+       android:gravity="center"
+       android:orientation="vertical">
 
+      <EditText
+          android:id="@+id/documentIDTV"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+
+          android:background="@drawable/boarder"
+          android:hint="AddSomething"
+          android:padding="15dp"
+
+          ></EditText>
+
+      <EditText
+          android:id="@+id/documentIDET"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/documentIDTV"
+          android:layout_marginTop="10dp"
+
+
+          android:layout_marginEnd="10dp"
+          android:background="@drawable/boarder"
+          android:hint="Document ID "
+          android:inputType="text"
+          android:maxLength="20"
+          android:padding="15dp"
+
+
+          android:singleLine="true"
+
+          ></EditText>
+
+      <EditText
+          android:id="@+id/cityNameTV"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/documentIDET"
+
+          android:layout_marginTop="10dp"
+
+          android:layout_marginEnd="10dp"
+          android:background="@drawable/boarder"
+          android:hint="Add City Name"
+          android:inputType="text"
+          android:maxLength="20"
+          android:padding="15dp"
+
+          android:singleLine="true"
+
+
+          ></EditText>
+
+      <EditText
+          android:id="@+id/citydetailsTV"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/cityNameTV"
+          android:layout_marginTop="10dp"
+
+          android:layout_marginEnd="10dp"
+          android:background="@drawable/boarder"
+          android:hint="CityDetails"
+          android:inputType="text"
+          android:maxLength="20"
+          android:padding="15dp"
+          android:singleLine="true"
+
+
+          ></EditText>
+
+      <Button
+          android:id="@+id/save"
+          android:layout_width="200dp"
+          android:layout_height="60dp"
+          android:layout_below="@id/citydetailsTV"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/boarder"
+          android:onClick="addValues"
+          android:padding="15dp"
+          android:paddingTop="50dp"
+          android:text="Add Values"></Button>
+
+
+      <Button
+          android:id="@+id/loadNote"
+          android:layout_width="200dp"
+
+          android:layout_height="60dp"
+
+          android:layout_below="@id/save"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/boarder"
+          android:onClick="getValuesFromFb"
+          android:text="Show Values"></Button>
+
+      <Button
+          android:id="@+id/update"
+          android:layout_width="200dp"
+
+          android:layout_height="60dp"
+
+          android:layout_below="@id/loadNote"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/boarder"
+          android:onClick="updateDocumentFieldValue"
+          android:text="UpdateValues"></Button>
+
+      <TextView
+          android:id="@+id/LTEXT"
+          android:layout_width="wrap_content"
+          android:layout_height="60dp"
+          android:layout_below="@id/loadNote"
+          android:layout_marginStart="10dp"
+          android:layout_marginLeft="20dp"
+          android:layout_marginTop="10dp"
+          android:layout_marginEnd="25dp"
+          android:textSize="20sp"
+
+          />
+   </LinearLayout>
 </RelativeLayout>
