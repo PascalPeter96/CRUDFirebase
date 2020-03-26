@@ -82,12 +82,16 @@
        android:layout_height="60dp"
        android:id="@+id/loadNote"
        android:layout_below="@id/save"
-       android:onClick="loadNote"
+       android:onClick="getValuesFromFb"
        android:text="Show Values"></Button>
    <TextView
-       android:layout_width="200dp"
-       android:layout_height="200dp"
-       android:id="@+id/infoTV"
-      android:text="info"
-       android:layout_below="@id/loadNote"></TextView>
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textSize="20sp"
+       android:layout_below="@id/loadNote"
+       android:layout_marginLeft="20dp"
+       android:id="@+id/LTEXT"
+
+       />
+
 </RelativeLayout>

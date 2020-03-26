@@ -20,16 +20,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String KEY_TITLE = "NewCities";
-    private static final String KEY_DESCRIPTION = "LahoreCity";
-    private TextView textViewData;
 
     //Step 1: Create object of Firebase Firestore
     private FirebaseFirestore objectFirebaseFirestore;
 
     private Dialog objectDialog;
     private EditText documentET,cityNameET,cityDetailsET;
-    private DocumentReference noteref = objectFirebaseFirestore.collection("NewCities").document("LahoreCity");
+    TextView valuesTv;
+    DocumentReference objectDocumentReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         objectDialog.setContentView(R.layout.please_wait);
         documentET=findViewById(R.id.documentIDET);
-        textViewData = findViewById(R.id.infoTV);
+        valuesTv = findViewById(R.id.LTEXT);
         cityNameET=findViewById(R.id.cityNameTV);
         cityDetailsET=findViewById(R.id.citydetailsTV);
     }
@@ -86,29 +84,53 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public  void loadNote(View v){
-    noteref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-        @Override
-        public void onSuccess(DocumentSnapshot documentSnapshot) {
+    public void getValuesFromFb(View view)
+    {
 
-            if (documentSnapshot.exists()) {
-                String title = documentSnapshot.getString(KEY_TITLE);
-                String description = documentSnapshot.getString(KEY_DESCRIPTION);
+        try {
+            if(!documentET.getText().toString().isEmpty()) {
+                objectDocumentReference = objectFirebaseFirestore.collection("NewCities").document(
+
+                        documentET.getText().toString()
+                );
+
+                objectDocumentReference.get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                String cityId= documentSnapshot.getId();
+                                String cityDetails = documentSnapshot.getString("city_details");
+                                String cityName = documentSnapshot.getString("city_name");
+
+                                valuesTv.setText(
+                                        "CityID : " +cityId + "\n"+
+                                                "City Description : " +cityDetails + "\n"+
+                                                "City Name : " +cityName
 
 
 
-                textViewData.setText("NewCities " + title + "\n" + "LahoreCity: " + description);
-            } else {
-                Toast.makeText(MainActivity.this, "Document does not exist", Toast.LENGTH_SHORT).show();
+                                );
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this,"Fails to get Values Back",Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(MainActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+
+
 
         }
-    });
+        catch (Exception e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+
+
+        }
+
 
 
 
