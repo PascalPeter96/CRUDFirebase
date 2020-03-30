@@ -16,18 +16,20 @@
        android:textSize="25sp"
        android:fontFamily="sans-serif-condensed-medium"
        android:layout_marginStart="70dp"
+
        ></TextView>
 
    <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
+       android:layout_width="402dp"
+       android:layout_height="699dp"
        android:layout_alignParentStart="true"
        android:layout_alignParentEnd="true"
        android:layout_alignParentBottom="true"
-       android:layout_marginStart="103dp"
-       android:layout_marginTop="66dp"
-       android:layout_marginEnd="108dp"
-       android:layout_marginBottom="116dp"
+       android:layout_marginStart="9dp"
+       android:layout_marginTop="32dp"
+       android:layout_marginEnd="0dp"
+       android:layout_marginBottom="0dp"
+       android:background="@drawable/boarder2"
        android:gravity="center"
        android:orientation="vertical">
 
@@ -38,13 +40,13 @@
           android:layout_marginTop="10dp"
 
           android:background="@drawable/boarder"
-          android:hint="AddSomething"
+          android:hint="Document ID "
           android:padding="15dp"
 
           ></EditText>
 
       <EditText
-          android:id="@+id/documentIDET"
+          android:id="@+id/stdIDET"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_below="@id/documentIDTV"
@@ -53,7 +55,7 @@
 
           android:layout_marginEnd="10dp"
           android:background="@drawable/boarder"
-          android:hint="Document ID "
+          android:hint="Student Document ID "
           android:inputType="text"
           android:maxLength="20"
           android:padding="15dp"
@@ -64,16 +66,16 @@
           ></EditText>
 
       <EditText
-          android:id="@+id/cityNameTV"
+          android:id="@+id/stdNameET"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_below="@id/documentIDET"
+          android:layout_below="@id/stdNameET"
 
           android:layout_marginTop="10dp"
 
           android:layout_marginEnd="10dp"
           android:background="@drawable/boarder"
-          android:hint="Add City Name"
+          android:hint="Add Student Name"
           android:inputType="text"
           android:maxLength="20"
           android:padding="15dp"
@@ -84,15 +86,15 @@
           ></EditText>
 
       <EditText
-          android:id="@+id/citydetailsTV"
+          android:id="@+id/stdrollnoET"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_below="@id/cityNameTV"
+          android:layout_below="@id/stdNameET"
           android:layout_marginTop="10dp"
 
           android:layout_marginEnd="10dp"
           android:background="@drawable/boarder"
-          android:hint="CityDetails"
+          android:hint="Add Student RollNumber"
           android:inputType="text"
           android:maxLength="20"
           android:padding="15dp"
@@ -105,7 +107,7 @@
           android:id="@+id/save"
           android:layout_width="200dp"
           android:layout_height="60dp"
-          android:layout_below="@id/citydetailsTV"
+          android:layout_below="@id/stdNameET"
           android:layout_marginTop="10dp"
           android:background="@drawable/boarder"
           android:onClick="addValues"
@@ -123,7 +125,7 @@
           android:layout_below="@id/save"
           android:layout_marginTop="10dp"
           android:background="@drawable/boarder"
-          android:onClick="getValuesFromFb"
+          android:onClick="showdata"
           android:text="Show Values"></Button>
 
       <Button
@@ -138,8 +140,20 @@
           android:onClick="updateDocumentFieldValue"
           android:text="UpdateValues"></Button>
 
+      <Button
+          android:id="@+id/delete"
+          android:layout_width="200dp"
+
+          android:layout_height="60dp"
+
+          android:layout_below="@id/update"
+          android:layout_marginTop="10dp"
+          android:background="@drawable/boarder"
+          android:onClick="deletecollection"
+          android:text="Delete Collection"></Button>
+
       <TextView
-          android:id="@+id/LTEXT"
+          android:id="@+id/tv_one"
           android:layout_width="wrap_content"
           android:layout_height="60dp"
           android:layout_below="@id/loadNote"
