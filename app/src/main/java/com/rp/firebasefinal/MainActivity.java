@@ -5,160 +5,220 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Step 1: Create object of Firebase Firestore
     private FirebaseFirestore objectFirebaseFirestore;
-
+    private CollectionReference ObjectCollectioReference;
+    private DocumentReference objectDocumentReference;
     private Dialog objectDialog;
-    private EditText documentET,cityNameET,cityDetailsET;
-    TextView valuesTv;
-    DocumentReference objectDocumentReference;
+    private EditText  stdId,stdname,stdrollno;
+    private TextView tv_one;
+    private static final String CollectionName="BSCS6A";
+    private static final String Student_ID="";
+    private static final String Student_Name="student_name";
+    private static final String Student_Rollno="student_rollno";
+    private String allData ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Step 2: Initialize Firebase firestore object
-        objectFirebaseFirestore=FirebaseFirestore.getInstance();
         objectDialog=new Dialog(this);
-
         objectDialog.setContentView(R.layout.please_wait);
-        documentET=findViewById(R.id.documentIDET);
-        valuesTv = findViewById(R.id.LTEXT);
-        cityNameET=findViewById(R.id.cityNameTV);
-        cityDetailsET=findViewById(R.id.citydetailsTV);
+
+        stdId=findViewById(R.id.stdIDET);
+        stdname=findViewById(R.id.stdNameET);
+        stdrollno=findViewById(R.id.stdrollnoET);
+
+        tv_one = findViewById(R.id.tv_one);
+
+        try {
+            objectFirebaseFirestore=FirebaseFirestore.getInstance();
+            ObjectCollectioReference=objectFirebaseFirestore.collection(CollectionName);
+        }
+        catch (Exception e) {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void addValues(View v)
+
+    public void  showdata(View v)
+    {
+
+        try
+        {
+            objectDialog.show();
+            ObjectCollectioReference.get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            objectDialog.dismiss();
+                            tv_one.setText("");
+                            stdId.setText("");
+                            for (DocumentSnapshot objectDocumentReference : queryDocumentSnapshots) {
+                                String std_ID = objectDocumentReference.getId();
+                                String std_Name = objectDocumentReference.getString(Student_Name);
+                                String std_rollno = objectDocumentReference.getString(Student_Rollno);
+                                allData += "Student ID : " + std_ID + '\n' + "Student Name : " + std_Name + '\n' + "Student Rollno : " + std_rollno ;
+                            }
+                            tv_one.setText(allData);
+                            Toast.makeText(MainActivity.this,"Retrieve Data Succcessf",Toast.LENGTH_LONG).show();
+                        }
+
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    objectDialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Fails to retrieve data:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void  deletecollection(View v)
     {
         try
         {
-            if(!documentET.getText().toString().isEmpty() && !cityNameET.getText().toString().isEmpty()
-                    && !cityDetailsET.getText().toString().isEmpty()) {
-                objectDialog.show();
-                Map<String, Object> objectMap = new HashMap<>();
-                objectMap.put("city_name", cityNameET.getText().toString());
-                objectMap.put("city_details", cityDetailsET.getText().toString());
-                objectFirebaseFirestore.collection("NewCities")
-                        .document(documentET.getText().toString()).set(objectMap)
+            if(!stdId.getText().toString().isEmpty())
+            {
+
+
+                objectDocumentReference = objectFirebaseFirestore.collection(CollectionName)
+                        .document(stdId.getText().toString());
+
+
+
+                objectDocumentReference.delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                objectDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Data Added Successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this,"Do id Deleted",Toast.LENGTH_LONG).show();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                objectDialog.dismiss();
-                                Toast.makeText(MainActivity.this, "Fails to add data", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this,"fails to delete",Toast.LENGTH_LONG).show();
                             }
                         });
             }
             else
             {
-                Toast.makeText(this, "Please enter valid details", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Fails to delete the Document",Toast.LENGTH_LONG);
             }
+
         }
         catch (Exception e)
         {
-            objectDialog.dismiss();
-            Toast.makeText(this, "addValues:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
-    public void getValuesFromFb(View view)
-    {
+
+    public void addValues(View v) {
 
         try {
-            if(!documentET.getText().toString().isEmpty()) {
-                objectDocumentReference = objectFirebaseFirestore.collection("NewCities").document(
-
-                        documentET.getText().toString()
-                );
-
-                objectDocumentReference.get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                String cityId= documentSnapshot.getId();
-                                documentET.setText("");
-                                documentET.requestFocus();
-                                String cityDetails = documentSnapshot.getString("city_details");
-                                String cityName = documentSnapshot.getString("city_name");
-
-                                valuesTv.setText(
-                                        "CityID : " +cityId + "\n"+
-                                                "City Description : " +cityDetails + "\n"+
-                                                "City Name : " +cityName
+            objectFirebaseFirestore = FirebaseFirestore.getInstance();
+            objectFirebaseFirestore.collection(CollectionName).document(stdId.getText().toString()).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
 
-
-                                );
-
+                            if (task.getResult().exists()) {
+                                Toast.makeText(MainActivity.this, "You Have Already Created", Toast.LENGTH_SHORT).show();
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this,"Fails to get Values Back",Toast.LENGTH_SHORT).show();
+
+                            else
+                            {
+                                if(!stdId.getText().toString().isEmpty() && !stdname.getText().toString().isEmpty() && !stdrollno.getText().toString().isEmpty()) {
+                                    objectDialog.show();
+
+                                    Map<String,Object> objMap=new HashMap<>();
+                                    objMap.put(Student_Name, stdname.getText().toString());
+                                    objMap.put(Student_Rollno, stdrollno.getText().toString());
+                                    objectFirebaseFirestore.collection(CollectionName)
+                                            .document(stdId.getText().toString()).set(objMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    objectDialog.dismiss();
+                                                    Toast.makeText(MainActivity.this, "Data Added Successfully", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    objectDialog.dismiss();
+                                                    Toast.makeText(MainActivity.this, "Fails to add data", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                                else
+                                {
+                                    Toast.makeText(MainActivity.this, "Please enter valid details", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        });
-            }
 
-
+                        }
+                    });
 
         }
         catch (Exception e)
         {
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
 
+            Toast.makeText(this, "Add Values"+e.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
 
-
-
-
     }
-
     public void updateDocumentFieldValue(View view){
         try {
 
             objectDocumentReference = objectFirebaseFirestore.collection("NewCities").document(
 
-                    documentET.getText().toString()
+                    stdId.getText().toString()
             );
             Map<String,Object> objectMap=new HashMap<>();
-           objectMap.put("city_details",cityDetailsET.getText().toString());
-           objectDocumentReference.update(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-               @Override
-               public void onSuccess(Void aVoid) {
-                   Toast.makeText(MainActivity.this,"Updated",Toast.LENGTH_SHORT).show();
+            objectMap.put("city_details",stdrollno.getText().toString());
+            objectDocumentReference.update(objectMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(MainActivity.this,"Updated",Toast.LENGTH_SHORT).show();
 
-               }
-           }).addOnFailureListener(new OnFailureListener() {
-               @Override
-               public void onFailure(@NonNull Exception e) {
-                   Toast.makeText(MainActivity.this,"Failed Update",Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MainActivity.this,"Failed Update",Toast.LENGTH_SHORT).show();
 
-               }
-           });
+                }
+            });
         }catch (Exception e)
         {
 
@@ -166,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "addValues:"+e.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-            }
+        }
 
     }
 }
